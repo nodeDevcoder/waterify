@@ -8,8 +8,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-// Load the CSV data
-const datasetPath = "water_potability.csv";
+const datasetPath = "Tensor/waterPotability.csv";
 
 async function loadDataset() {
   const data = [];
@@ -19,23 +18,18 @@ async function loadDataset() {
     fs.createReadStream(datasetPath)
       .pipe(csv.parse({ headers: true }))
       .on("data", (row) => {
-        data.push(Object.values(row).map(parseFloat));
         labels.push(parseFloat(row["Potability"]));
+        delete row["Potability"];
+        data.push(Object.values(row).map(parseFloat));
       })
-      .on("end", () => {
-        resolve();
-      })
-      .on("error", (error) => {
-        reject(error);
-      });
+      .on("end", resolve)
+      .on("error", reject);
   });
 
   return [data, labels];
 }
 
-// Preprocess the data
 function preprocessData(data, labels) {
-  // Split the dataset into training and testing sets
   const splitRatio = 0.8;
   const splitIndex = Math.floor(data.length * splitRatio);
 
@@ -47,7 +41,6 @@ function preprocessData(data, labels) {
   return [xTrain, yTrain, xTest, yTest];
 }
 
-// Define the model architecture
 function createModel() {
   const model = tf.sequential();
   model.add(
@@ -59,7 +52,6 @@ function createModel() {
   return model;
 }
 
-// Compile the model
 function compileModel(model) {
   model.compile({
     optimizer: tf.train.adam(),
@@ -68,9 +60,14 @@ function compileModel(model) {
   });
 }
 
-// Train the model
 async function trainModel(model, xTrain, yTrain, xTest, yTest) {
   const epochs = 100;
+
+  console.log('xTrain length:', xTrain.length);  // Add this
+  console.log('yTrain length:', yTrain.length);  // Add this
+  console.log('xTest length:', xTest.length);   // Add this
+  console.log('yTest length:', yTest.length);   // Add this
+
   return await model.fit(tf.tensor(xTrain), tf.tensor(yTrain), {
     epochs,
     validationData: [tf.tensor(xTest), tf.tensor(yTest)],
@@ -78,40 +75,46 @@ async function trainModel(model, xTrain, yTrain, xTest, yTest) {
   });
 }
 
-// Make predictions
 function predict(model, inputData) {
   const inputTensor = tf.tensor([inputData]);
   const prediction = model.predict(inputTensor);
   return prediction.dataSync()[0];
 }
 
-// Main function
 async function main() {
-  const [data, labels] = await loadDataset();
-  const [xTrain, yTrain, xTest, yTest] = preprocessData(data, labels);
+  try {
+    const [data, labels] = await loadDataset();
+    const [xTrain, yTrain, xTest, yTest] = preprocessData(data, labels);
 
-  const model = createModel();
-  compileModel(model);
+    const model = createModel();
+    compileModel(model);
 
-  await trainModel(model, xTrain, yTrain, xTest, yTest);
+    await trainModel(model, xTrain, yTrain, xTest, yTest);
 
-  // Prompt the user for input for each of the 9 water quality parameters
-  const userInput = [];
-  for (let i = 1; i <= 9; i++) {
-    const input = await askQuestion(`Enter value for parameter ${i}: `);
-    userInput.push(parseFloat(input));
+    const userInput = [];
+    for (let i = 1; i <= 9; i++) {
+      const input = await askQuestion(`Enter value for parameter ${i}: `);
+      userInput.push(parseFloat(input));
+    }
+
+    const prediction = predict(model, userInput);
+
+    console.log(`Predicted Potability: ${prediction > 0.5 ? 1 : 0}`);
+  } catch (error) {
+    console.error("Error occurred:", error);
+  } finally {
+    rl.close();
   }
-
-  const prediction = predict(model, userInput);
-
-  console.log(`Predicted Potability: ${prediction > 0.5 ? 1 : 0}`);
-  rl.close();
 }
 
 function askQuestion(question) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     rl.question(question, (answer) => {
-      resolve(answer);
+      if (isNaN(parseFloat(answer))) {
+        reject("Invalid input. Please enter a number.");
+      } else {
+        resolve(answer);
+      }
     });
   });
 }
