@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/nodeDevcoder/congressional#readme",
   "devDependencies": {
+    "flowbite-typography": "^1.0.3",
     "tailwindcss": "^3.3.3"
   }
 }
