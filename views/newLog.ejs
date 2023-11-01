@@ -1,0 +1,87 @@
+<%- include('partials/header', { title: 'New Log - Waterify' }) %>
+
+<body>
+  <%- include('partials/navbar') %>
+
+  <section class="bg-gray-50 dark:bg-gray-900 mt-20">
+    <div class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div class="w-full max-w-md bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+        <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
+          <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white" id="log-title">
+            New log -
+          </h1>
+          <form class="space-y-4 md:space-y-4" action="/logs/new" method="post">
+            <div>
+              <label for="shower-freq" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Showers</label>
+              <input type="number" name="showerFreq" id="shower-freq" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Number of showers" required min="0" max="9" title="Max. 9 showers a day.">
+              <input type="number" name="showerAvg" id="shower-avg" class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Avg. time of shower (mins)" required min="0" max="60" title="Max. 1 hour per shower">
+            </div>
+            <div>
+              <label for="toilet-freq" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Toilet visits</label>
+              <input type="number" name="toiletFreq" id="toilet-freq" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Toilet visits" required>
+            </div>
+            <div>
+              <label for="laundry-done" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Did you do laundry today? <input type="checkbox" id="laundry-done" class="inline-block ml-4 rounded"></label>
+              <input type="number" name="laundryFreq" id="laundry-freq" class="laundryDone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Number of loads" required pattern="/^[1-9]$/" title="Max. 9 loads a day.">
+              <select name="laundryLoad" id="laundry-load" class="mt-2 laundryDone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                <option value="null" selected disabled>Choose load size</option>
+                <option value="sm">Small</option>
+                <option value="md">Medium</option>
+                <option value="lg">Large</option>
+                <option value="xl">X-Large</option>
+              </select>
+            </div>
+            <div>
+              <label for="dishwasher-done" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Did you wash dishes today? <input type="checkbox" id="dishwasher-done" class="inline-block ml-4 rounded"></label>
+              <input type="number" name="dishFreq" id="dishwasher-freq" class="dishwasherDone bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Number of loads" required pattern="/^[1-9]$/" title="Max. 9 loads a day.">
+            </div>
+            <div>
+                <textarea name="notes" id="notes" style="width: 100%; resize: none; padding: 5px;" rows="5" class="rounded" placeholder="Notes..."></textarea>
+            </div>
+            <button type="submit" class="w-full h-10 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Add log</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('log-title').innerText = 'New log - ' + new Date().toLocaleDateString({
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    })
+    document.getElementById('laundry-done').addEventListener('change', () => {
+      inputHide('laundry-done', 'laundryDone')
+    })
+    document.getElementById('dishwasher-done').addEventListener('change', () => {
+      inputHide('dishwasher-done', 'dishwasherDone')
+    })
+
+    function inputHide(check, clss) {
+      Array.from(document.getElementsByClassName(clss)).forEach(element => {
+        if (document.getElementById(check).checked) {
+          element.classList.remove('hidden')
+          element.setAttribute('required', 'required')
+          element.setAttribute('pattern', '^[1-9]$')
+        } else {
+          element.classList.add('hidden')
+          element.removeAttribute('required')
+          element.removeAttribute('pattern')
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      inputHide('laundry-done', 'laundryDone')
+      inputHide('dishwasher-done', 'dishwasherDone')
+    })
+  </script>
+</body>
+<!-- <%- include('partials/footer') %> -->
+
+</html>

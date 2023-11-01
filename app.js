@@ -16,6 +16,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
+const Log = require('./models/log');
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
@@ -63,12 +64,14 @@ app.use((req, res, next) => {
     next();
 });
 
-mongoose.set('sanitizeFilter', true);
 app.use(bodyParser.json());
 
 app.use(main);
 
 passport.use(User.createStrategy());
+passport.use(new LocalStrategy({
+    usernameField: 'email'
+}, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

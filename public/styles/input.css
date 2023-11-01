@@ -10,3 +10,13 @@ ion-icon {
 ion-icon {
     margin-bottom: -3.7px;
 }
+
+.dashboard thead th {
+    position: sticky;
+    scroll-margin-top: 20px
+}
+
+body>*:not(.navbar) {
+    scroll-margin-top: 25px;
+    scroll-snap-top: 25px;
+}

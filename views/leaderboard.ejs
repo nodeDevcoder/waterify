@@ -1,0 +1,31 @@
+<%- include('partials/header', { title: 'Leaderboard - Waterify' }) %>
+
+<body>
+  <%- include('partials/navbar') %>
+  <section class="bg-white dark:bg-gray-900 mt-20">
+    <h1 class="my-4 mt-10 pt-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl w-6/12 text-center lg:text-6xl dark:text-white ml-auto mr-auto">Leaderboard</h1>
+    <h3 class="my-2 pt-2 text-2xl font-extrabold tracking-tight leading-none text-gray-900 md:text-2xl w-6/12 text-center lg:text-3xl dark:text-white ml-auto mr-auto">Zip code: <%= currentUser.zipCode %></h3>
+    <%- include('partials/flash') %>
+    <div class="py-4 px-4 pt-4 mx-auto max-w-screen-xl text-center lg:py-4 lg:px-12">
+      <% for( let i = 0; i < leaderboard.length; i++ ) { %>
+
+      <a href="#" class="block mb-2 max-w-sm ml-auto mr-auto p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700" data-num="<%= i %>">
+        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"><%= i + 1 %>.&nbsp;&nbsp;&nbsp; <%= leaderboard[i].user.firstName %> <%= leaderboard[i].user.lastName %></h5>
+        <p class="font-normal text-gray-700 dark:text-gray-400">Average <strong><%= leaderboard[i].score %> gallons</strong> per day.</p>
+      </a>
+
+      <% } %>
+    </div>
+  </section>
+  <script>
+    document.querySelector('[data-num="0"]').style.backgroundColor = "#F5DF68";
+    document.querySelector('[data-num="1"]').style.backgroundColor = "#E3E3E3";
+    document.querySelector('[data-num="2"]').style.backgroundColor = "#CD7F32";
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+<%- include('partials/footer') %>
+
+</html>

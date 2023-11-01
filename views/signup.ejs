@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Home' }) %>
+<%- include('partials/header', { title: 'Register - Waterify' }) %>
 
 <body>
   <%- include('partials/navbar') %>
@@ -9,28 +9,39 @@
           <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
             Create an account
           </h1>
-          <form class="space-y-4 md:space-y-6" action="#">
+          <%- include('partials/flash') %>
+          <form class="space-y-4 md:space-y-6" action="/signup" method="POST">
             <div>
               <label for="email" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
-              <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required="">
+              <input type="email" name="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@example.com" required="" autocomplete="email">
             </div>
             <div>
-              <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-              <input type="password" name="password" id="password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+              <label for="first-name" class="inline-block text-sm font-medium text-gray-900 dark:text-white" style="width: 47%">First name</label>
+              <div class="inline-block" style="width: 2% "></div>
+              <label for="last-name" class="inline-block text-sm font-medium text-gray-900 dark:text-white" style="width: 47%">Last name</label>
+              <input type="text" name="firstName" id="first-name" placeholder="John" class="w- bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" style="width: 49%" autocomplete="given-name">
+              <input type="text" name="lastName" id="last-name" placeholder="Doe" class="w-5/12 bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 inline-block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" style="width: 49%" autocomplete="family-name">
             </div>
             <div>
-              <label for="confirm-password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-              <input type="confirm-password" name="confirm-password" id="confirm-password" placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="">
+              <label for="password" class="inline-block text-sm font-medium text-gray-900 dark:text-white" style="width: 47%">Password</label>
+              <div class="inline-block" style="width: 2% "></div>
+              <label for="confirm-password" class="inline-block text-sm font-medium text-gray-900 dark:text-white" style="width: 47%">Confirm password</label>
+              <input type="password" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" name="password" id="password" title="Must contain at least one number and one letter, and at least 8 characters" name="password" id="password" placeholder="••••••••" class="w- inline-block bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" style="width: 49%" autocomplete="new-password">
+              <input type="password" name="confirmPassword" id="confirm-password" pattern="^(?=.*[A-Za-z])(?=.*\d).{8,}$" title="Passwords must match." placeholder="••••••••" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg inline-block focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required="" style="width: 49%" autocomplete="new-password">
+            </div>
+            <div>
+              <label for="zip-code" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Zip code</label>
+              <input type="text" name="zipCode" id="zip-code" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="12345" required="">
             </div>
             <div class="flex items-start">
               <div class="flex items-center h-5">
-                <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="">
+                <input id="terms" aria-describedby="terms" type="checkbox" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required="" onclick="checkTerms()">
               </div>
               <div class="ml-3 text-sm">
                 <label for="terms" class="font-light text-gray-500 dark:text-gray-300">I accept the <a class="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
               </div>
             </div>
-            <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Create an account</button>
+            <button id="submit" type="submit" class="w-full text-white bg-primary-600 disabled:opacity-75 disabled:hover:bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" disabled>Create an account</button>
             <p class="text-sm font-light text-gray-500 dark:text-gray-400">
               Already have an account? <a href="/login" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
             </p>
@@ -39,6 +50,19 @@
       </div>
     </div>
   </section>
+  <script>
+    document.getElementsByTagName('form')[0].addEventListener('change', function() {
+      checkTerms()
+    })
+
+    function checkTerms() {
+      if (document.getElementById('terms').checked && document.getElementById('email').value.trim() !== '' && document.getElementById('first-name').value.trim() !== '' && document.getElementById('last-name').value.trim() !== '' && document.getElementById('password').value.trim() !== '' && document.getElementById('confirm-password').value.trim() == document.getElementById('password').value.trim() && document.getElementById('zip-code').value.trim() !== '') {
+        document.getElementById('submit').removeAttribute('disabled')
+      } else {
+        document.getElementById('submit').setAttribute('disabled', '')
+      }
+    }
+  </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.1/flowbite.min.js"></script>
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
